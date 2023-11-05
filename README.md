@@ -7,3 +7,8 @@
 </p>
 
 > 🌈 An app to control Lian Li Hub lights on Linux
+
+# Supported devices
+| Product name | Product ID |
+|----------|:-------------:|
+| LianLi-UNI FAN-SL-v1.8 | 0xa100 |
