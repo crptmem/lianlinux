@@ -32,6 +32,8 @@ func isConfigPresent() string {
 	viper.SetConfigName(configFileName)
 	viper.AddConfigPath(configFilePath)
 
+	viper.SetDefault("current", "rainbow")
+
 	// Check if the config file already exists
 	if _, err := os.Stat(filepath.Join(configFilePath, configFileName)); os.IsNotExist(err) {
 		// Create the config directory if it doesn't exist
