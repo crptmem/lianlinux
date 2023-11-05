@@ -15,9 +15,10 @@ func changeMode(first byte, second byte, device hid.DeviceInfo) {
 }
 
 func rainbow(device hid.DeviceInfo) {
-	changeMode(0x05, 0xfe, device)
+	//changeMode(0x15, 0x23, device)
+	changeMode(0x05, 0xff, device)
 }
 
 func rainbowMorph(device hid.DeviceInfo) {
-	changeMode(0x45, 0xff, device)
+	changeMode(0x04, 0xff, device)
 }
