@@ -72,19 +72,7 @@ func readConfig() {
 	}
 }
 
-func setLightMode(device hid.DeviceInfo) {
-	currentMode := viper.Get("current")
-	log.Infof("Setting mode to %s", currentMode)
-
-	log.Debugf("Setting %s mode for device %s", currentMode, device.ProductStr)
-
-	switch currentMode {
-	case "rainbow":
-		rainbow(device)
-	case "rainbowMorph":
-		rainbowMorph(device)
-	default:
-		rainbow(device)
-		log.Warnf("Unknown mode %s, using fallback rainbow", currentMode)
-	}
+func setConfigLightMode(device hid.DeviceInfo) {
+	currentMode := viper.Get("current").(string)
+	SetLightMode(device, currentMode)
 }

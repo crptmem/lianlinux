@@ -6,17 +6,16 @@ import (
 	"github.com/sstallion/go-hid"
 )
 
-func deviceEnumerate() []*hid.DeviceInfo {
-	var devs []*hid.DeviceInfo
+var Devs []*hid.DeviceInfo
+
+func DeviceEnumerate() {
 	readConfig()
 	hid.Enumerate(0x0cf2, 0xa100, func(info *hid.DeviceInfo) error {
 		log.Infof("Found a %s", info.ProductStr)
-		devs = append(devs, info)
-		setLightMode(*info)
+		Devs = append(Devs, info)
+		setConfigLightMode(*info)
 		return nil
 	})
-
-	return devs
 }
 
 func hidWrite(vid uint16, pid uint16, serial string, packet []byte) {
@@ -35,13 +34,12 @@ func DeviceInitialize() {
 	log.Info("Looking for Lian Li devices...")
 
 	// Enumerate HID devices
-	devicesInfo := deviceEnumerate()
-	if len(devicesInfo) == 0 {
+	if len(Devs) == 0 {
 		log.Error("No supported devices found")
 		return
 	}
 
-	log.Info(fmt.Sprintf("Found and configured %d device(s)", len(devicesInfo)))
+	log.Info(fmt.Sprintf("Found and configured %d device(s)", len(Devs)))
 	//rainbowMorph(*devicesInfo[0])
-
+	//static(*devicesInfo[0])
 }

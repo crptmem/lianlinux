@@ -1,18 +1,17 @@
-package main
+package core
 
 import (
 	"github.com/charmbracelet/log"
-	"lianlinux/core"
 	"os"
 )
 
-func main() {
+func Run() {
 	environment, _ := os.LookupEnv("ENVIRONMENT")
 
 	if environment == "dev" {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	core.DeviceInitialize()
+	DeviceInitialize()
 	// server.Listen()
 }
