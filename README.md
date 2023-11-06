@@ -9,39 +9,13 @@
 > 🌈 An app to control Lian Li Hub lights on Linux
 
 > [!IMPORTANT]  
-> I only have **LianLi-UNI FAN-SL-v1.8** hub, so I can't support other devices. Contributions are appreciated!
- 
-# Supported devices
+> I only have **LianLi-UNI FAN-SL-v1.8** hub, so I can't support other devices. Contributions are welcome!
 
-| Product name | Product ID |
-|----------|:-------------:|
-| LianLi-UNI FAN-SL-v1.8 | 0xa100 |
+# About
+LianLinux is an app written in Go to control Lian Li hub RGB light on Linux.
 
-# Lian Li USB protocol
-## Packets structure
-### Color mode switch packet:
-| Start (?) | Port ID | First mode byte | Second mode byte |
-|----------|:-------------:|:-------------:|:-------------:|
-| E0 | 10-14 | 00-? | 00-? |
+# Wiki
+For information about installation, usage, supported devices and Lian Li USB protocol [visit the wiki](https://github.com/crptmem/lianlinux/wiki).
 
-### Command packet:
-| Start (?) | Channel | Command | Argument |
-|----------|:-------------:|:-------------:|:-------------:|
-| E0 | 10-14 | 10-24 | 00-31 | 00-FF |
-
-## Known bytes
-`BaseByte` (start byte) = 0xE0 <br />
-`DefaultChannelByte` = 0x10 <br />
-
-## Light bytes
-`Rainbow` = 0x05 <br />
-`RainbowMorph` = 0x04 <br />
-`RainbowSecond` = 0xFF <br />
-`StaticFirst` = 0x01 <br />
-`StaticSecond` = 0x02 <br />
-
-## Command bytes
-`RgbSyncCmd` = 0x30 <br />
-└───`Arg` = 0x00 (disable), 0x01 (enable) <br />
-`PwmCmd` = 0x31 <br />
-`SpeedCmd` = 0x00 <br />
+---
+<p align="center>GNU General Public License v3.0</p>
