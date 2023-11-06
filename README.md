@@ -6,7 +6,7 @@
   <a href="https://github.com/crptmem/lianlinux/network/members"><img src="https://img.shields.io/github/forks/crptmem/lianlinux?colorA=151515&colorB=D9BC8C&style=for-the-badge&logo=github"></a>
 </p>
 
-> 🌈 An app to control Lian Li Hub lights on Linux
+> An app to control Lian Li Hub lights on Linux
 
 > [!IMPORTANT]  
 > I only have **LianLi-UNI FAN-SL-v1.8** hub, so I can't support other devices. Contributions are welcome!
