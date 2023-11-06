@@ -82,7 +82,6 @@ func SetLightMode(device hid.DeviceInfo, mode string, rgb ...byte) {
 	case "breathing":
 		breathing(device, rgb)
 	default:
-		rainbow(device)
-		log.Warnf("Unknown mode %s, using fallback rainbow", mode)
+		log.Fatalf("Unknown mode %s, available: rainbow, morph, static, breathing", mode)
 	}
 }
