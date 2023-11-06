@@ -10,12 +10,16 @@ var Devs []*hid.DeviceInfo
 
 func DeviceEnumerate() {
 	readConfig()
-	hid.Enumerate(0x0cf2, 0xa100, func(info *hid.DeviceInfo) error {
+	err := hid.Enumerate(0x0cf2, 0xa100, func(info *hid.DeviceInfo) error {
 		log.Infof("Found a %s", info.ProductStr)
 		Devs = append(Devs, info)
 		setConfigLightMode(*info)
 		return nil
 	})
+	if err != nil {
+		log.Fatalf("Error during enumerating HID devices: %v", err)
+		return
+	}
 }
 
 func hidWrite(vid uint16, pid uint16, serial string, packet []byte) {
