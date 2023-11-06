@@ -23,8 +23,8 @@ func changeMode(color []byte, device hid.DeviceInfo) {
 	}
 }
 
-// Set device light mode to Static
-func static(device hid.DeviceInfo, color []byte) {
+// Change device light mode with RGB arguments
+func changeRGBMode(device hid.DeviceInfo, color []byte, mode byte) {
 	for i := 0; i < 4; i++ {
 		var rgb []byte
 		for i := 0; i < 38; i++ {
@@ -34,29 +34,21 @@ func static(device hid.DeviceInfo, color []byte) {
 		rgb = append(rgb, bytes.Repeat([]byte{0x00}, 200)...)
 		colorPacket := append([]byte{0xe0, byte(0x30 + i)}, rgb...)
 
-		DeviceWrite(*Devs[0], []byte{0xe0, byte(0x10 + i), 0x32, 0x03})
+		DeviceWrite(*Devs[0], []byte{0xe0, byte(0x10 + i), 0x32, mode})
 		DeviceWrite(*Devs[0], colorPacket)
 	}
-	changeMode(append([]byte{StaticFirst, StaticSecond}, bytes.Repeat([]byte{0x00}, 257)...), device)
+}
 
+// Set device light mode to Static
+func static(device hid.DeviceInfo, color []byte) {
+	changeRGBMode(device, color, 0x03)
+	changeMode(append([]byte{StaticFirst, StaticSecond}, bytes.Repeat([]byte{0x00}, 257)...), device)
 }
 
 // Set device light mode to Breathing
 func breathing(device hid.DeviceInfo, color []byte) {
-	for i := 0; i < 4; i++ {
-		var rgb []byte
-		for i := 0; i < 38; i++ {
-			rgb = append(rgb, color...)
-		}
-
-		rgb = append(rgb, bytes.Repeat([]byte{0x00}, 200)...)
-		colorPacket := append([]byte{0xe0, byte(0x30 + i)}, rgb...)
-
-		DeviceWrite(*Devs[0], []byte{0xe0, byte(0x10 + i), 0x32, 0x03})
-		DeviceWrite(*Devs[0], colorPacket)
-	}
+	changeRGBMode(device, color, 0x03)
 	changeMode(append([]byte{0x02, 0xff}, bytes.Repeat([]byte{0x00}, 257)...), device)
-
 }
 
 // Set device light mode to Meteor
@@ -118,7 +110,6 @@ func meteor(device hid.DeviceInfo, color []byte) {
 		DeviceWrite(*Devs[0], colorPacket)
 	}
 	changeMode(append([]byte{0x24, 0xff}, bytes.Repeat([]byte{0x00}, 257)...), device)
-
 }
 
 // Set device light mode to Rainbow

@@ -30,34 +30,45 @@ func root(c *gin.Context) {
 func lightMode(c *gin.Context) {
 	deviceNumber, err := strconv.Atoi(c.Query("dev"))
 	if err != nil {
+		c.Status(500)
 		c.IndentedJSON(http.StatusOK, responseJSON{
 			Status:  "error",
 			Message: fmt.Sprintf("%v", err),
 		})
 		return
 	}
-	log.Info(deviceNumber)
 
 	newMode := c.Query("mode")
-	if newMode != "" {
+	if newMode == "" || deviceNumber > len(core.Devs) {
+		c.Status(400)
+		c.IndentedJSON(http.StatusOK, responseJSON{
+			Status:  "error",
+			Message: "Mode is empty or device index out of bounds",
+		})
+		return
+	}
+
+	switch newMode {
+	case "static", "morph", "rainbow":
 		core.SetLightMode(*core.Devs[deviceNumber], newMode)
 		c.IndentedJSON(http.StatusOK, responseJSON{
 			Status:  "ok",
 			Message: fmt.Sprintf("Set device %d mode to %s", deviceNumber, newMode),
 		})
-		return
+	default:
+		c.Status(400)
+		c.IndentedJSON(http.StatusOK, responseJSON{
+			Status:  "error",
+			Message: "Unknown mode",
+		})
 	}
-	c.IndentedJSON(http.StatusOK, responseJSON{
-		Status:  "error",
-		Message: "Mode is empty",
-	})
 }
 
 func Listen(port int) {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.GET("/", root)
-	router.GET("/mode", lightMode)
+	router.POST("/mode", lightMode)
 
 	log.Infof("Listening on port %d", port)
 	err := router.Run("localhost:" + strconv.Itoa(port))
