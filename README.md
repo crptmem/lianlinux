@@ -10,6 +10,21 @@
 
 > [!IMPORTANT]  
 > I only have **LianLi-UNI FAN-SL-v1.8** hub, so I can't support other devices. Contributions are appreciated!
+
+# Install
+```sh
+$ git clone https://github.com/crptmem/lianlinux.git
+$ cd lianlinux
+$ go install
+```
+
+# Usage
+```sh
+$ lianlinux
+```
+
+# Supported modes
+`rainbow`, `morph`, `static`
  
 # Supported devices
 
