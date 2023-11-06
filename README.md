@@ -9,7 +9,7 @@
 > 🌈 An app to control Lian Li Hub lights on Linux
 
 > [!IMPORTANT]  
-> I only have **LianLi-UNI FAN-SL-v1.8** hub, so I can't support other devices. Contributions are appreciated!
+> I only have **LianLi-UNI FAN-SL-v1.8** hub, so I can't support other devices. Contributions are welcome!
 
 # Install
 ```sh
