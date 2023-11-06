@@ -51,5 +51,4 @@ func DeviceInitialize() {
 	}
 
 	log.Info(fmt.Sprintf("Found and configured %d device(s)", len(Devs)))
-	meteor(*Devs[0], []byte{9})
 }
