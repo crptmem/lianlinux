@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/charmbracelet/log"
+	"lianlinux/core"
 	"os"
 )
 
@@ -12,5 +13,6 @@ func main() {
 		log.SetLevel(log.DebugLevel)
 	}
 
-	deviceInitialize()
+	core.DeviceInitialize()
+	// server.Listen()
 }

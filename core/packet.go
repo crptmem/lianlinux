@@ -1,4 +1,4 @@
-package main
+package core
 
 import "github.com/charmbracelet/log"
 
@@ -27,7 +27,7 @@ func packetGenerate(cmd int, arg byte, channel ...byte) []byte {
 		packet = append(packet, channel[0], SpeedCmd, arg)
 	}
 
-	log.Info("packetGenerate:", "packet", packet)
+	log.Debug("packetGenerate:", "packet", packet)
 
 	return packet
 }
