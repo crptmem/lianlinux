@@ -32,6 +32,15 @@
 ## Known bytes
 `BaseByte` (start byte) = 0xE0 <br />
 `DefaultChannelByte` = 0x10 <br />
+
+## Light bytes
+`Rainbow` = 0x05 <br />
+`RainbowMorph` = 0x04 <br />
+`RainbowSecond` = 0xFF <br />
+`StaticFirst` = 0x01 <br />
+`StaticSecond` = 0x02 <br />
+
+## Command bytes
 `RgbSyncCmd` = 0x30 <br />
 └───`Arg` = 0x00 (disable), 0x01 (enable) <br />
 `PwmCmd` = 0x31 <br />
