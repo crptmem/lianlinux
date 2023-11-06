@@ -62,7 +62,6 @@ func isConfigPresent() string {
 }
 
 func readConfig() {
-	log.Info("Reading configuration...")
 	viper.SetConfigFile(isConfigPresent())
 
 	err := viper.ReadInConfig()

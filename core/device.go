@@ -35,8 +35,6 @@ func deviceWrite(device hid.DeviceInfo, packet []byte) {
 }
 
 func DeviceInitialize() {
-	log.Info("Looking for Lian Li devices...")
-
 	// Enumerate HID devices
 	if len(Devs) == 0 {
 		log.Error("No supported devices found")
