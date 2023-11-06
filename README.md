@@ -12,3 +12,9 @@
 | Product name | Product ID |
 |----------|:-------------:|
 | LianLi-UNI FAN-SL-v1.8 | 0xa100 |
+
+# Lian Li USB protocol
+Color mode switch packet:
+| Start (?) | Port ID | First mode byte | Second mode byte |
+|----------|:-------------:|-------------:|-------------:|
+| E0 | 10-14 | 00-? | 00-? |
