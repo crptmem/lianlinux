@@ -40,6 +40,6 @@ func DeviceInitialize() {
 	}
 
 	log.Info(fmt.Sprintf("Found and configured %d device(s)", len(Devs)))
-	//rainbowMorph(*devicesInfo[0])
-	//static(*devicesInfo[0])
+	//rainbowMorph(*Devs[0])
+	//static(*Devs[0])
 }
