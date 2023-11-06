@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/charmbracelet/log"
 	"github.com/sstallion/go-hid"
-	"strings"
 )
 
 var Devs []*hid.DeviceInfo
@@ -28,11 +27,6 @@ func DeviceEnumerate() {
 func hidWrite(vid uint16, pid uint16, serial string, packet []byte) {
 	open, err := hid.Open(vid, pid, serial)
 	if err != nil {
-		if strings.Contains(fmt.Sprintf("%v", err), "Permission denied") {
-			log.Fatalf("Please run lianlinux with elevated permissions")
-			return
-		}
-		log.Fatal(fmt.Sprintf("Error during writing to device %x:%x (%s)", vid, pid, serial), "error", err)
 		return
 	}
 	open.Write(packet)
