@@ -14,7 +14,21 @@
 | LianLi-UNI FAN-SL-v1.8 | 0xa100 |
 
 # Lian Li USB protocol
-Color mode switch packet:
+## Packets structure
+### Color mode switch packet:
 | Start (?) | Port ID | First mode byte | Second mode byte |
 |----------|:-------------:|:-------------:|:-------------:|
 | E0 | 10-14 | 00-? | 00-? |
+
+### Command packet:
+| Start (?) | Channel | Command | Argument |
+|----------|:-------------:|:-------------:|:-------------:|
+| E0 | 10-14 | 10-24 | 00-31 | 00-FF |
+
+## Known bytes
+`BaseByte` (start byte) = 0xE0 <br />
+`DefaultChannelByte` = 0x10 <br />
+`RgbSyncCmd` = 0x30 <br />
+└───`Arg` = 0x00 (disable), 0x01 (enable) <br />
+`PwmCmd` = 0x31 <br />
+`SpeedCmd` = 0x00 <br />
