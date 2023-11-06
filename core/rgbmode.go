@@ -41,6 +41,24 @@ func static(device hid.DeviceInfo, color []byte) {
 
 }
 
+// Set device light mode to Breathing
+func breathing(device hid.DeviceInfo, color []byte) {
+	for i := 0; i < 4; i++ {
+		var rgb []byte
+		for i := 0; i < 38; i++ {
+			rgb = append(rgb, color...)
+		}
+
+		rgb = append(rgb, bytes.Repeat([]byte{0x00}, 200)...)
+		colorPacket := append([]byte{0xe0, byte(0x30 + i)}, rgb...)
+
+		DeviceWrite(*Devs[0], []byte{0xe0, byte(0x10 + i), 0x32, 0x03})
+		DeviceWrite(*Devs[0], colorPacket)
+	}
+	changeMode(append([]byte{0x02, 0xff}, bytes.Repeat([]byte{0x00}, 257)...), device)
+
+}
+
 // Set device light mode to Rainbow
 func rainbow(device hid.DeviceInfo) {
 	changeMode([]byte{Rainbow, RainbowSecond}, device)
@@ -61,6 +79,8 @@ func SetLightMode(device hid.DeviceInfo, mode string, rgb ...byte) {
 		rainbowMorph(device)
 	case "static":
 		static(device, rgb)
+	case "breathing":
+		breathing(device, rgb)
 	default:
 		rainbow(device)
 		log.Warnf("Unknown mode %s, using fallback rainbow", mode)

@@ -20,7 +20,7 @@ var lightCmd = &cobra.Command{
 		case "rainbow", "morph":
 			log.Infof("Setting mode to %s", mode)
 			core.SetLightMode(*core.Devs[0], mode)
-		case "static":
+		case "static", "breathing":
 			log.Infof("Setting mode to %s", mode)
 			core.SetLightMode(*core.Devs[0], mode, []byte{byte(r), byte(b), byte(g)}...)
 		case "":
