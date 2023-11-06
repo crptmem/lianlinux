@@ -37,7 +37,7 @@ func static(device hid.DeviceInfo, color []byte) {
 		DeviceWrite(*Devs[0], []byte{0xe0, byte(0x10 + i), 0x32, 0x03})
 		DeviceWrite(*Devs[0], colorPacket)
 	}
-	changeMode([]byte{StaticFirst, StaticSecond}, device)
+	changeMode(append([]byte{StaticFirst, StaticSecond}, bytes.Repeat([]byte{0x00}, 257)...), device)
 
 }
 

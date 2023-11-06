@@ -22,7 +22,7 @@ var lightCmd = &cobra.Command{
 			core.SetLightMode(*core.Devs[0], mode)
 		case "static":
 			log.Infof("Setting mode to %s", mode)
-			core.SetLightMode(*core.Devs[0], mode, []byte{byte(r), byte(g), byte(b)}...)
+			core.SetLightMode(*core.Devs[0], mode, []byte{byte(r), byte(b), byte(g)}...)
 		case "":
 			log.Errorf("Please specify a mode")
 			os.Exit(1)

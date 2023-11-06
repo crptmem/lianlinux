@@ -40,6 +40,7 @@ func hidWrite(vid uint16, pid uint16, serial string, packet []byte) {
 
 // DeviceWrite Write a packet to supported Lian Li device
 func DeviceWrite(device hid.DeviceInfo, packet []byte) {
+	log.Debugf("Packet: %x", packet)
 	hidWrite(device.VendorID, device.ProductID, device.SerialNbr, packet)
 }
 
