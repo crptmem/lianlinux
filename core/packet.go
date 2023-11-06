@@ -15,6 +15,7 @@ const (
 	SPEED = 2
 )
 
+// Generate a configuration packet
 func packetGenerate(cmd int, arg byte, channel ...byte) []byte {
 	var packet []byte
 	packet = append(packet, BaseByte)

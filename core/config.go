@@ -61,6 +61,7 @@ func isConfigPresent() string {
 	return filepath.Join(configFilePath, configFileName)
 }
 
+// Read JSON config
 func readConfig() {
 	viper.SetConfigFile(isConfigPresent())
 
@@ -71,6 +72,7 @@ func readConfig() {
 	}
 }
 
+// Set device light mode by config key "current"
 func setConfigLightMode(device hid.DeviceInfo) {
 	currentMode := viper.Get("current").(string)
 	SetLightMode(device, currentMode)
