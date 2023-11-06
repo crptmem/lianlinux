@@ -33,6 +33,7 @@ func isConfigPresent() string {
 	viper.AddConfigPath(configFilePath)
 
 	viper.SetDefault("current", "rainbow")
+	viper.SetDefault("rgb", map[string]int{"r": 0, "g": 0, "b": 0})
 
 	// Check if the config file already exists
 	if _, err := os.Stat(filepath.Join(configFilePath, configFileName)); os.IsNotExist(err) {
@@ -75,5 +76,8 @@ func readConfig() {
 // Set device light mode by config key "current"
 func setConfigLightMode(device hid.DeviceInfo) {
 	currentMode := viper.Get("current").(string)
-	SetLightMode(device, currentMode)
+	rgb := viper.Get("rgb").(map[string]interface{})
+	rgbArray := []byte{byte(rgb["r"].(float64)), byte(rgb["g"].(float64)), byte(rgb["b"].(float64))}
+
+	SetLightMode(device, currentMode, rgbArray...)
 }

@@ -24,11 +24,11 @@ func changeMode(color []byte, device hid.DeviceInfo) {
 }
 
 // Set device light mode to Static
-func static(device hid.DeviceInfo) {
+func static(device hid.DeviceInfo, color []byte) {
 	for i := 0; i < 4; i++ {
 		var rgb []byte
 		for i := 0; i < 38; i++ {
-			rgb = append(rgb, 0x00, 0xff, 0xff)
+			rgb = append(rgb, color...)
 		}
 
 		rgb = append(rgb, bytes.Repeat([]byte{0x00}, 200)...)
@@ -36,8 +36,6 @@ func static(device hid.DeviceInfo) {
 
 		DeviceWrite(*Devs[0], []byte{0xe0, byte(0x10 + i), 0x32, 0x03})
 		DeviceWrite(*Devs[0], colorPacket)
-
-		log.Infof("%x", colorPacket)
 	}
 	changeMode([]byte{StaticFirst, StaticSecond}, device)
 
@@ -53,7 +51,7 @@ func rainbowMorph(device hid.DeviceInfo) {
 	changeMode([]byte{RainbowMorph, RainbowSecond}, device)
 }
 
-func SetLightMode(device hid.DeviceInfo, mode string) {
+func SetLightMode(device hid.DeviceInfo, mode string, rgb ...byte) {
 	log.Debugf("Setting %s mode for device %s", mode, device.ProductStr)
 
 	switch mode {
@@ -62,7 +60,7 @@ func SetLightMode(device hid.DeviceInfo, mode string) {
 	case "morph":
 		rainbowMorph(device)
 	case "static":
-		static(device)
+		static(device, rgb)
 	default:
 		rainbow(device)
 		log.Warnf("Unknown mode %s, using fallback rainbow", mode)

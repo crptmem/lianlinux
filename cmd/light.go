@@ -13,10 +13,19 @@ var lightCmd = &cobra.Command{
 	Short: "Control RGB lights",
 	Run: func(cmd *cobra.Command, args []string) {
 		mode, _ := cmd.Flags().GetString("mode")
+		r, _ := cmd.Flags().GetInt("red")
+		g, _ := cmd.Flags().GetInt("green")
+		b, _ := cmd.Flags().GetInt("blue")
 		switch mode {
-		case "rainbow", "morph", "static":
+		case "rainbow", "morph":
 			log.Infof("Setting mode to %s", mode)
 			core.SetLightMode(*core.Devs[0], mode)
+		case "static":
+			log.Infof("Setting mode to %s", mode)
+			core.SetLightMode(*core.Devs[0], mode, []byte{byte(r), byte(g), byte(b)}...)
+		case "":
+			log.Errorf("Please specify a mode")
+			os.Exit(1)
 		default:
 			log.Errorf("Unknown mode: %s", mode)
 			os.Exit(1)
@@ -28,5 +37,8 @@ var lightCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(lightCmd)
 
-	lightCmd.PersistentFlags().String("mode", "rainbow", "RGB light mode")
+	lightCmd.PersistentFlags().String("mode", "", "RGB light mode")
+	lightCmd.PersistentFlags().Int("red", 0, "Red color")
+	lightCmd.PersistentFlags().Int("green", 0, "Green color")
+	lightCmd.PersistentFlags().Int("blue", 0, "Blue color")
 }
