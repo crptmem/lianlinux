@@ -1,12 +1,19 @@
+use std::sync::Mutex;
+
 use colored::Colorize;
-use hidapi::HidApi;
+use hidapi::{HidApi, HidDevice};
+use lazy_static::lazy_static;
 
 use crate::core::devices::a100;
 
 pub mod devices;
-pub mod packet;
+pub mod modes;
 
 pub const LIANLI_VENDOR_ID: u16 = 0x0CF2;
+
+lazy_static! {
+    pub static ref DEVICE_LIST: Mutex<Vec<HidDevice>> = Mutex::new(vec![]);
+}
 
 pub fn init() {
     match HidApi::new() {
