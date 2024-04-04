@@ -3,7 +3,7 @@ use std::{process::exit, vec};
 use colored::Colorize;
 use hidapi::{HidApi, HidDevice};
 
-use crate::core::{modes::static_mode, DEVICE_LIST, LIANLI_VENDOR_ID};
+use crate::core::{DEVICE_LIST, LIANLI_VENDOR_ID};
 
 extern crate hidapi;
 
@@ -58,5 +58,4 @@ pub fn init(api: HidApi) {
         exit(1);
     }
     devices_list.push(device);
-    static_mode(&[0, 255, 0], &devices_list[0]);
 }

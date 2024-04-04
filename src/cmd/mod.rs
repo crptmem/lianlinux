@@ -2,8 +2,9 @@ use std::process::exit;
 
 use clap::{Parser, Subcommand};
 use colored::Colorize;
+use nix::unistd::Uid;
 
-use crate::core::{modes::{breathing_mode, static_mode}, DEVICE_LIST};
+use crate::{core::{modes::{breathing_mode, rainbow_mode, static_mode}, DEVICE_LIST}, daemon};
 
 #[derive(Debug, Parser)]
 #[clap(name = "my-app", version)]
@@ -28,32 +29,62 @@ enum Command {
         /// Blue
         blue: u8
     },
+
+    /// Run lianlinux as a daemon
+    Daemon {}
 }
 
-fn light(mode: String, red: u8, green: u8, blue: u8) {
-    match mode.as_str() {
-        "static" => {
-            let devices_list = DEVICE_LIST.lock().unwrap();
-            static_mode(&[red, green, blue], &devices_list[0]);
-        },
-        "breathing" => {
-            let devices_list = DEVICE_LIST.lock().unwrap();
-            breathing_mode(&[red, green, blue], &devices_list[0]);
-        },
-        _ => {
-            println!("Unknown mode {}", mode.red());
-            exit(1);
+async fn light(mode: String, red: u8, green: u8, blue: u8) {
+    if Uid::effective().is_root() { 
+        match mode.as_str() {
+            "static" => {
+                let devices_list = DEVICE_LIST.lock().unwrap();
+                static_mode(&[red, green, blue], &devices_list[0]);
+            },
+            "breathing" => {
+                let devices_list = DEVICE_LIST.lock().unwrap();
+                breathing_mode(&[red, green, blue], &devices_list[0]);
+            },
+            "rainbow" => {
+                let devices_list = DEVICE_LIST.lock().unwrap();
+                rainbow_mode(&devices_list[0]);
+            },
+            _ => {
+                println!("Unknown mode {}", mode.red());
+                exit(1);
+            }
         }
-    }
+    } else {
+        match mode.as_str() {
+            "static" => {
+                daemon::client::static_mode(red, blue, green).await;
+            },
+            "breathing" => {
+                let devices_list = DEVICE_LIST.lock().unwrap();
+                breathing_mode(&[red, green, blue], &devices_list[0]);
+            },
+            "rainbow" => {
+                let devices_list = DEVICE_LIST.lock().unwrap();
+                rainbow_mode(&devices_list[0]);
+            },
+            _ => {
+                println!("Unknown mode {}", mode.red());
+                exit(1);
+            }
+        }
+    }  
     println!("Changing mode to {} with colors {red}, {green}, {blue}", mode.purple());
 } 
 
-pub fn handle_args() {
+pub async fn handle_args() {
     let args = App::parse();
 
     match args.command {
         Command::Light { mode, red, green, blue } => {
-            light(mode, red, green, blue);
+            light(mode, red, green, blue).await;
+        },
+        Command::Daemon {  } => {
+            daemon::run().await;
         }
     }
 }

@@ -19,3 +19,9 @@ pub fn breathing_mode(color: &[u8], device: &HidDevice) {
     packet.append(&mut [0x00].repeat(0x250).to_vec());
     set_mode(&packet[..], &device)
 }
+
+pub fn rainbow_mode(device: &HidDevice) {
+    let mut packet = vec![0x05, 0xff];
+    packet.append(&mut [0x00].repeat(0x250).to_vec());
+    set_mode(&packet[..], &device)
+}
