@@ -25,3 +25,9 @@ pub fn rainbow_mode(device: &HidDevice) {
     packet.append(&mut [0x00].repeat(0x250).to_vec());
     set_mode(&packet[..], &device)
 }
+
+pub fn morph_mode(device: &HidDevice) {
+    let mut packet = vec![0x04, 0xff];
+    packet.append(&mut [0x00].repeat(0x250).to_vec());
+    set_mode(&packet[..], &device)
+}

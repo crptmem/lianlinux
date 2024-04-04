@@ -3,7 +3,7 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 
-use crate::core::{modes::{breathing_mode, static_mode}, DEVICE_LIST};
+use crate::core::{modes::{breathing_mode, morph_mode, rainbow_mode, static_mode}, DEVICE_LIST};
 
 pub mod client;
 
@@ -41,6 +41,20 @@ async fn light(Json(payload): Json<LightMethod>) -> (StatusCode, Json<Response>)
         },
         "breathing" => {
             breathing_mode(&[payload.red, payload.blue, payload.green], &DEVICE_LIST.lock().unwrap()[0]);
+             (StatusCode::OK, Json(Response {
+                status: 200,
+                message: "ok".to_string()
+            }))
+        },
+        "rainbow" => {
+            rainbow_mode(&DEVICE_LIST.lock().unwrap()[0]);
+             (StatusCode::OK, Json(Response {
+                status: 200,
+                message: "ok".to_string()
+            }))
+        },
+        "morph" => {
+            morph_mode(&DEVICE_LIST.lock().unwrap()[0]);
              (StatusCode::OK, Json(Response {
                 status: 200,
                 message: "ok".to_string()

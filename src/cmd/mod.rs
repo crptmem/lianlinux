@@ -4,7 +4,7 @@ use clap::{Parser, Subcommand};
 use colored::Colorize;
 use nix::unistd::Uid;
 
-use crate::{core::{modes::{breathing_mode, rainbow_mode, static_mode}, DEVICE_LIST}, daemon};
+use crate::{core::{modes::{breathing_mode, morph_mode, rainbow_mode, static_mode}, DEVICE_LIST}, daemon};
 
 #[derive(Debug, Parser)]
 #[clap(name = "my-app", version)]
@@ -49,6 +49,10 @@ async fn light(mode: String, red: u8, green: u8, blue: u8) {
                 let devices_list = DEVICE_LIST.lock().unwrap();
                 rainbow_mode(&devices_list[0]);
             },
+            "morph" => {
+                let devices_list = DEVICE_LIST.lock().unwrap();
+                morph_mode(&devices_list[0]);
+            },
             _ => {
                 println!("Unknown mode {}", mode.red());
                 exit(1);
@@ -60,12 +64,13 @@ async fn light(mode: String, red: u8, green: u8, blue: u8) {
                 daemon::client::static_mode(red, blue, green).await;
             },
             "breathing" => {
-                let devices_list = DEVICE_LIST.lock().unwrap();
-                breathing_mode(&[red, green, blue], &devices_list[0]);
+                daemon::client::breathing_mode(red, blue, green).await;
             },
             "rainbow" => {
-                let devices_list = DEVICE_LIST.lock().unwrap();
-                rainbow_mode(&devices_list[0]);
+                daemon::client::rainbow_mode(red, blue, green).await;
+            },
+            "morph" => {
+                daemon::client::morph_mode(red, blue, green).await;
             },
             _ => {
                 println!("Unknown mode {}", mode.red());
