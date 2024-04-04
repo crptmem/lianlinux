@@ -8,4 +8,3 @@ edition = "2021"
 [dependencies]
 colored = "2.1.0"
 hidapi = "2.6.0"
-rusb = "0.9.3"
