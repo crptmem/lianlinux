@@ -13,6 +13,7 @@
 
 # About
 LianLinux is an app written in Rust to control Lian Li hub RGB light on Linux.
+Previously it was written in Go, but I do not have many experience with Go, but I am familiar with Rust. Just for my comfort.
 
 # Wiki
 For information about installation, usage, supported devices and Lian Li USB protocol [visit the wiki](https://github.com/crptmem/lianlinux/wiki).
