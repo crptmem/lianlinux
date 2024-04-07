@@ -7,6 +7,7 @@ use crate::core::{modes::{breathing_mode, morph_mode, rainbow_mode, static_mode}
 
 pub mod client;
 
+/// # Structure containing client request to change lightning mode
 #[derive(Deserialize, Serialize, Debug)]
 pub struct LightMethod {
     pub mode: String,
@@ -15,21 +16,27 @@ pub struct LightMethod {
     pub green: u8
 }
 
+/// # Structure containing server response
 #[derive(Serialize, Debug)]
 struct Response {
     status: isize,
     message: String
 }
 
+/// # Run daemon
+///
+/// This function listens local HTTP server on port 8471
 pub async fn run() {
     let app = Router::new()
         .route("/light", post(light))
         .route("/", get(root));
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:8471").await.unwrap();
+    println!("Listening on 127.0.0.1:8471");
     axum::serve(listener, app).await.unwrap();
 }
 
+/// # Handle lightning mode
 async fn light(Json(payload): Json<LightMethod>) -> (StatusCode, Json<Response>) {
     match payload.mode.as_str() {
         "static" => {
@@ -69,6 +76,9 @@ async fn light(Json(payload): Json<LightMethod>) -> (StatusCode, Json<Response>)
     } 
 }
 
+/// # Root route method
+///
+/// Just returns "Hello, World!"
 async fn root() -> &'static str {
     "Hello, World!"
 }

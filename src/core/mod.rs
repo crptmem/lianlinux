@@ -9,12 +9,17 @@ use crate::core::devices::a100;
 pub mod devices;
 pub mod modes;
 
+/// # Lian Li vendor ID
 pub const LIANLI_VENDOR_ID: u16 = 0x0CF2;
 
 lazy_static! {
+    /// # Initialize global HID device list
     pub static ref DEVICE_LIST: Mutex<Vec<HidDevice>> = Mutex::new(vec![]);
 }
 
+/// # Initialize core module
+///
+/// Searches for Lian Li controllers in system
 pub fn init() {
     match HidApi::new() {
         Ok(api) => {
