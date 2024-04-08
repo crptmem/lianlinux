@@ -20,7 +20,7 @@ lazy_static! {
 /// # Initialize core module
 ///
 /// Searches for Lian Li controllers in system
-pub fn init() {
+pub fn init() { 
     match HidApi::new() {
         Ok(api) => {
             for device in api.device_list() {

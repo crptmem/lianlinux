@@ -1,6 +1,6 @@
 [package]
 name = "lianlinux"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 description = "An app to control Lian Li lights in Linux"
@@ -11,6 +11,7 @@ description = "An app to control Lian Li lights in Linux"
 axum = "0.7.5"
 clap = { version = "4.5.4", features = ["derive"] }
 colored = "2.1.0"
+config = "0.14.0"
 hidapi = "2.6.0"
 lazy_static = "1.4.0"
 nix = { version = "0.28.0", features = ["user"] }
