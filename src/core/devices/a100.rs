@@ -35,7 +35,7 @@ pub fn set_rgb_mode(color: &[u8], mode: u8, device: &HidDevice) {
         let mode_packet: Vec<u8> = vec![REPORT_BYTE, 0x10 + i, mode];
         let mut rgb: Vec<u8> = vec![];
 
-        rgb.append(&mut color.repeat(38));
+        rgb.append(&mut color.repeat(128));
 
         let mut packet: Vec<u8> = vec![REPORT_BYTE, 0x30 + i];
         packet.append(&mut rgb);
