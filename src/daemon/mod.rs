@@ -59,7 +59,7 @@ pub async fn run() {
         "breathing" => breathing_mode(&[settings.r, settings.g, settings.b], &DEVICE_LIST.lock().unwrap()[0]),
         "rainbow" => rainbow_mode(&DEVICE_LIST.lock().unwrap()[0]),
         "morph" => morph_mode(&DEVICE_LIST.lock().unwrap()[0]),
-        "runway" => runway_mode(&[settings.r, settings.g, settings.b, settings.r2, settings.g2, settings.b2], &DEVICE_LIST.lock().unwrap()[0]),
+        "runway" => runway_mode(&mut [settings.r, settings.g, settings.b, settings.r2, settings.g2, settings.b2], &DEVICE_LIST.lock().unwrap()[0]),
         _ => panic!("Unknown mode in config file: {}", settings.current)
     }
 
@@ -72,14 +72,14 @@ pub async fn run() {
 async fn light(Json(payload): Json<LightMethod>) -> (StatusCode, Json<Response>) {
     match payload.mode.as_str() {
         "static" => {
-            static_mode(&[payload.red, payload.blue, payload.green], &DEVICE_LIST.lock().unwrap()[0]);
+            static_mode(&[payload.red, payload.green, payload.blue], &DEVICE_LIST.lock().unwrap()[0]);
              (StatusCode::OK, Json(Response {
                 status: 200,
                 message: "ok".to_string()
             }))
         },
         "breathing" => {
-            breathing_mode(&[payload.red, payload.blue, payload.green], &DEVICE_LIST.lock().unwrap()[0]);
+            breathing_mode(&[payload.red, payload.green, payload.blue], &DEVICE_LIST.lock().unwrap()[0]);
              (StatusCode::OK, Json(Response {
                 status: 200,
                 message: "ok".to_string()
@@ -100,7 +100,7 @@ async fn light(Json(payload): Json<LightMethod>) -> (StatusCode, Json<Response>)
             }))
         },
         "runway" => {
-            runway_mode(&[payload.red, payload.blue, payload.green, payload.red2, payload.green2, payload.blue2], &DEVICE_LIST.lock().unwrap()[0]);
+            runway_mode(&mut [payload.red, payload.green, payload.blue, payload.red2, payload.green2, payload.blue2], &DEVICE_LIST.lock().unwrap()[0]);
              (StatusCode::OK, Json(Response {
                 status: 200,
                 message: "ok".to_string()

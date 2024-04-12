@@ -45,26 +45,26 @@ async fn change(red: u8, blue: u8, green: u8, red2: u8, green2: u8, blue2: u8, m
 }
 
 /// # Static lightning mode
-pub async fn static_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, 0, 0, 0, "static".to_string()).await;
+pub async fn static_mode(red: u8, green: u8, blue: u8) {
+    change(red, green, blue, 0, 0, 0, "static".to_string()).await;
 }
 
 /// # Breathing lightning mode
-pub async fn breathing_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, 0, 0, 0, "breathing".to_string()).await;
+pub async fn breathing_mode(red: u8, green: u8, blue: u8) {
+    change(red, green, blue, 0, 0, 0, "breathing".to_string()).await;
 }
 
 /// # Rainbow lightning mode
-pub async fn rainbow_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, 0, 0, 0, "rainbow".to_string()).await;
+pub async fn rainbow_mode(red: u8, green: u8, blue: u8) {
+    change(red, green, blue, 0, 0, 0, "rainbow".to_string()).await;
 }
 
 /// # Morph lightning mode
-pub async fn morph_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, 0, 0, 0, "morph".to_string()).await;
+pub async fn morph_mode(red: u8, green: u8, blue: u8) {
+    change(red, green, blue, 0, 0, 0, "morph".to_string()).await;
 }
 
 /// # Runway lightning mode
-pub async fn runway_mode(red: u8, blue: u8, green: u8, red2: u8, blue2: u8, green2: u8) {
-    change(red, blue, green, red2, green2, blue2, "runway".to_string()).await;
+pub async fn runway_mode(red: u8, green: u8, blue: u8, red2: u8, green2: u8, blue2: u8) {
+    change(red, green, blue, red2, green2, blue2, "runway".to_string()).await;
 }
