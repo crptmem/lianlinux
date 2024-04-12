@@ -35,3 +35,12 @@ pub fn morph_mode(device: &HidDevice) {
     packet.append(&mut [0x00].repeat(0x250).to_vec());
     set_mode(&packet[..], &device)
 }
+
+/// # Set runway mode by sending USB packet
+pub fn runway_mode(color: &[u8], device: &HidDevice) {
+    set_rgb_mode(color, 0x03, &device);
+    
+    let mut packet = vec![0x1c, 0x00];
+    packet.append(&mut [0x00].repeat(0x250).to_vec());
+    set_mode(&packet[..], &device)
+}

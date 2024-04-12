@@ -4,7 +4,7 @@ use axum::{
 use config::Config;
 use serde::{Deserialize, Serialize};
 
-use crate::core::{modes::{breathing_mode, morph_mode, rainbow_mode, static_mode}, DEVICE_LIST};
+use crate::core::{modes::{breathing_mode, morph_mode, rainbow_mode, runway_mode, static_mode}, DEVICE_LIST};
 
 pub mod client;
 
@@ -14,7 +14,10 @@ pub struct LightMethod {
     pub mode: String,
     pub red: u8,
     pub blue: u8,
-    pub green: u8
+    pub green: u8,
+    pub red2: u8,
+    pub green2: u8,
+    pub blue2: u8
 }
 
 /// # Structure containing server response
@@ -87,6 +90,13 @@ async fn light(Json(payload): Json<LightMethod>) -> (StatusCode, Json<Response>)
         },
         "morph" => {
             morph_mode(&DEVICE_LIST.lock().unwrap()[0]);
+             (StatusCode::OK, Json(Response {
+                status: 200,
+                message: "ok".to_string()
+            }))
+        },
+        "runway" => {
+            runway_mode(&[payload.red, payload.blue, payload.green, payload.red2, payload.green2, payload.blue2], &DEVICE_LIST.lock().unwrap()[0]);
              (StatusCode::OK, Json(Response {
                 status: 200,
                 message: "ok".to_string()

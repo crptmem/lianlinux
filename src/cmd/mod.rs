@@ -1,7 +1,6 @@
 use std::process::exit;
-use crate::daemon;
+use crate::daemon::{self};
 use clap::{Parser, Subcommand};
-use colored::Colorize;
 
 /// # App struct for clap
 #[derive(Debug, Parser)]
@@ -9,6 +8,16 @@ use colored::Colorize;
 pub struct App {
     #[clap(subcommand)]
     command: Command,
+}
+
+struct LightParams {
+    mode: String,
+    red: Option<u8>,
+    green: Option<u8>,
+    blue: Option<u8>,
+    red2: Option<u8>,
+    green2: Option<u8>,
+    blue2: Option<u8>
 }
 
 /// # Enum with subcommands
@@ -26,7 +35,16 @@ enum Command {
         green: Option<u8>,
 
         /// Blue
-        blue: Option<u8>
+        blue: Option<u8>,
+
+        /// Second red
+        red2: Option<u8>,
+
+        /// Second green
+        green2: Option<u8>,
+
+        /// Second blue
+        blue2: Option<u8>
     },
 
     /// Run lianlinux as a daemon
@@ -34,17 +52,17 @@ enum Command {
 }
 
 /// # Change lightning mode by sending requests to daemon
-async fn light(mode: String, red: Option<u8>, green: Option<u8>, blue: Option<u8>) {
-    if (mode == "static" || mode == "breathing") && (red.is_none() || green.is_none() || blue.is_none()) {
+async fn light(params: LightParams) {
+    if (params.mode == "static" || params.mode == "breathing") && (params.red.is_none() || params.green.is_none() || params.blue.is_none()) {
         println!("Not enough arguments");
         exit(1);
     }
-    match mode.as_str() {
+    match params.mode.as_str() {
         "static" => {
-            daemon::client::static_mode(red.unwrap(), blue.unwrap(), green.unwrap()).await;
+            daemon::client::static_mode(params.red.unwrap(), params.green.unwrap(), params.blue.unwrap()).await;
         },
         "breathing" => {
-            daemon::client::breathing_mode(red.unwrap(), blue.unwrap(), green.unwrap()).await;
+            daemon::client::breathing_mode(params.red.unwrap(), params.green.unwrap(), params.green.unwrap()).await;
         },
         "rainbow" => {
             daemon::client::rainbow_mode(0, 0, 0).await;
@@ -52,8 +70,11 @@ async fn light(mode: String, red: Option<u8>, green: Option<u8>, blue: Option<u8
         "morph" => {
             daemon::client::morph_mode(0, 0, 0).await;
         },
+        "runway" => {
+            daemon::client::runway_mode(params.red.unwrap(), params.green.unwrap(), params.blue.unwrap(), params.red2.unwrap(), params.green2.unwrap(), params.blue2.unwrap()).await;
+        },
         _ => {
-            println!("Unknown mode {}", mode.red());
+            println!("Unknown mode {}", params.mode);
             exit(1);
         }
     }
@@ -65,9 +86,11 @@ pub async fn handle_args() {
     let args = App::parse();
 
     match args.command {
-        Command::Light { mode, red, green, blue } => {
+        Command::Light { mode, red, green, blue, red2, green2, blue2 } => {
             daemon::client::init().await;
-            light(mode, red, green, blue).await;
+            light(LightParams {
+                mode, red, green, blue, red2, green2, blue2
+            }).await;
         },
         Command::Daemon {  } => {
             daemon::run().await;

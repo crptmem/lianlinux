@@ -22,7 +22,7 @@ pub async fn init() {
 ///
 /// Sends a POST JSON request to localhost daemon which
 /// contains `mode`, `red`, `blue` and `green`
-async fn change(red: u8, blue: u8, green: u8, mode: String) {
+async fn change(red: u8, blue: u8, green: u8, red2: u8, green2: u8, blue2: u8, mode: String) {
     let client = reqwest::Client::new();
 
     let response = client
@@ -32,7 +32,10 @@ async fn change(red: u8, blue: u8, green: u8, mode: String) {
             mode,
             red,
             blue,
-            green
+            green,
+            red2,
+            green2,
+            blue2
         })
         .send()
         .await.unwrap();
@@ -43,20 +46,25 @@ async fn change(red: u8, blue: u8, green: u8, mode: String) {
 
 /// # Static lightning mode
 pub async fn static_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, "static".to_string()).await;
+    change(red, blue, green, 0, 0, 0, "static".to_string()).await;
 }
 
 /// # Breathing lightning mode
 pub async fn breathing_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, "breathing".to_string()).await;
+    change(red, blue, green, 0, 0, 0, "breathing".to_string()).await;
 }
 
 /// # Rainbow lightning mode
 pub async fn rainbow_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, "rainbow".to_string()).await;
+    change(red, blue, green, 0, 0, 0, "rainbow".to_string()).await;
 }
 
 /// # Morph lightning mode
 pub async fn morph_mode(red: u8, blue: u8, green: u8) {
-    change(red, blue, green, "morph".to_string()).await;
+    change(red, blue, green, 0, 0, 0, "morph".to_string()).await;
+}
+
+/// # Runway lightning mode
+pub async fn runway_mode(red: u8, blue: u8, green: u8, red2: u8, blue2: u8, green2: u8) {
+    change(red, blue, green, red2, green2, blue2, "runway".to_string()).await;
 }
