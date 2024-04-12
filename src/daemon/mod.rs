@@ -32,7 +32,10 @@ struct ConfigFile {
     current: String,
     r: u8,
     g: u8,
-    b: u8
+    b: u8,
+    r2: u8,
+    g2: u8,
+    b2: u8
 }
 
 /// # Run daemon
@@ -56,6 +59,7 @@ pub async fn run() {
         "breathing" => breathing_mode(&[settings.r, settings.g, settings.b], &DEVICE_LIST.lock().unwrap()[0]),
         "rainbow" => rainbow_mode(&DEVICE_LIST.lock().unwrap()[0]),
         "morph" => morph_mode(&DEVICE_LIST.lock().unwrap()[0]),
+        "runway" => runway_mode(&[settings.r, settings.g, settings.b, settings.r2, settings.g2, settings.b2], &DEVICE_LIST.lock().unwrap()[0]),
         _ => panic!("Unknown mode in config file: {}", settings.current)
     }
 
