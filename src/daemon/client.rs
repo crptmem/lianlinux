@@ -68,3 +68,8 @@ pub async fn morph_mode(red: u8, green: u8, blue: u8) {
 pub async fn runway_mode(red: u8, green: u8, blue: u8, red2: u8, green2: u8, blue2: u8) {
     change(red, green, blue, red2, green2, blue2, "runway".to_string()).await;
 }
+
+/// # Tide lightning mode
+pub async fn tide_mode(red: u8, green: u8, blue: u8, red2: u8, green2: u8, blue2: u8) {
+    change(red, green, blue, red2, green2, blue2, "tide".to_string()).await;
+}

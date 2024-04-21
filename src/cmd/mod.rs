@@ -73,6 +73,9 @@ async fn light(params: LightParams) {
         "runway" => {
             daemon::client::runway_mode(params.red.unwrap(), params.green.unwrap(), params.blue.unwrap(), params.red2.unwrap(), params.green2.unwrap(), params.blue2.unwrap()).await;
         },
+        "tide" => {
+            daemon::client::tide_mode(params.red.unwrap(), params.green.unwrap(), params.blue.unwrap(), params.red2.unwrap(), params.green2.unwrap(), params.blue2.unwrap()).await;
+        },
         _ => {
             println!("Unknown mode {}", params.mode);
             exit(1);

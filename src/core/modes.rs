@@ -46,3 +46,13 @@ pub fn runway_mode(color: &[u8], device: &HidDevice) {
     packet.append(&mut [0x00].repeat(0x250).to_vec());
     set_mode(&packet[..], &device)
 }
+
+/// # Set tide mode by sending USB packet
+pub fn tide_mode(color: &[u8], device: &HidDevice) {
+    let mut packet = vec![0x0a, 0x00];
+    packet.append(&mut [0x00].repeat(0x250).to_vec());
+    set_mode(&packet[..], &device);
+    set_rgb_mode(&[
+                 color[0], color[2], color[1], color[3], color[5], color[4]
+    ], 0x00, &device); 
+}
