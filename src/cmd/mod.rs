@@ -96,7 +96,7 @@ pub async fn handle_args() {
             }).await;
         },
         Command::Daemon {  } => {
-            daemon::run().await;
+            let _ = daemon::run().await;
         }
     }
 }

@@ -21,8 +21,8 @@ pub async fn init() {
 /// # Change controller light mode by calling daemon
 ///
 /// Sends a POST JSON request to localhost daemon which
-/// contains `mode`, `red`, `blue` and `green`
-async fn change(red: u8, blue: u8, green: u8, red2: u8, green2: u8, blue2: u8, mode: String) {
+/// contains `mode`, `red`, `green` and `blue`
+async fn change(red: u8, green: u8, blue: u8, red2: u8, green2: u8, blue2: u8, mode: String) {
     let client = reqwest::Client::new();
 
     let response = client
@@ -31,8 +31,8 @@ async fn change(red: u8, blue: u8, green: u8, red2: u8, green2: u8, blue2: u8, m
         .json(&LightMethod {
             mode,
             red,
-            blue,
             green,
+            blue,
             red2,
             green2,
             blue2

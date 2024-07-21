@@ -1,4 +1,4 @@
-use std::process::exit;
+use std::{fs::{create_dir, File}, io::Write, path::Path, process::exit};
 
 use axum::{
     http::StatusCode, routing::{get, post}, Json, Router
@@ -15,8 +15,8 @@ pub mod client;
 pub struct LightMethod {
     pub mode: String,
     pub red: u8,
-    pub blue: u8,
     pub green: u8,
+    pub blue: u8,
     pub red2: u8,
     pub green2: u8,
     pub blue2: u8
@@ -43,10 +43,25 @@ struct ConfigFile {
 /// # Run daemon
 ///
 /// This function listens local HTTP server on port 8471
-pub async fn run() {
+pub async fn run() -> Result<(), std::io::Error> {
     let app = Router::new()
         .route("/light", post(light))
         .route("/", get(root));
+
+    if !Path::new("/etc/lianlinux/config.toml").exists() {
+        create_dir("/etc/lianlinux/")?;
+        let mut f = File::create_new("/etc/lianlinux/config.toml")?;
+        let default_config = r#"# This is a default config, visit https://github.com/crptmem/lianlinux/wiki/Installation-and-usage
+# for more information
+current = "static"
+r2 = 0
+g2 = 0
+b2 = 0
+r = 255
+g = 255
+b = 255"#;
+        f.write_all(default_config.as_bytes())?;
+    }
 
     let settings_option = Config::builder()
         .add_source(config::File::with_name("/etc/lianlinux/config.toml"))
@@ -65,14 +80,15 @@ pub async fn run() {
         "breathing" => breathing_mode(&[settings.r, settings.g, settings.b], &DEVICE_LIST.lock().unwrap()[0]),
         "rainbow" => rainbow_mode(&DEVICE_LIST.lock().unwrap()[0]),
         "morph" => morph_mode(&DEVICE_LIST.lock().unwrap()[0]),
-        "runway" => runway_mode(&mut [settings.r, settings.g, settings.b, settings.r2, settings.g2, settings.b2], &DEVICE_LIST.lock().unwrap()[0]),
-        "tide" => tide_mode(&mut [settings.r, settings.g, settings.b, settings.r2, settings.g2, settings.b2], &DEVICE_LIST.lock().unwrap()[0]),
+        "runway" => runway_mode(&[settings.r, settings.g, settings.b, settings.r2, settings.g2, settings.b2], &DEVICE_LIST.lock().unwrap()[0]),
+        "tide" => tide_mode(&[settings.r, settings.g, settings.b, settings.r2, settings.g2, settings.b2], &DEVICE_LIST.lock().unwrap()[0]),
         _ => panic!("Unknown mode in config file: {}", settings.current)
     }
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:8471").await.unwrap();
     println!("Listening on 127.0.0.1:8471");
     axum::serve(listener, app).await.unwrap();
+    Ok(())
 }
 
 /// # Handle lightning mode
